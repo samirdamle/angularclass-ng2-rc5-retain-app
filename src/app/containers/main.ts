@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 import { AppBar } from '../ui';
 import { Notes } from './notes';
 
@@ -6,13 +7,14 @@ import { Notes } from './notes';
     selector: 'main-container',
     directives: [
         AppBar,
-        Notes
+        Notes,
+        ...ROUTER_DIRECTIVES
     ],
     template: `
         <div>
             <div class="app-bar"></div>
             <main class="main">
-                <notes-container></notes-container>                
+                <router-outlet></router-outlet>                
             </main>
         </div> 
     `

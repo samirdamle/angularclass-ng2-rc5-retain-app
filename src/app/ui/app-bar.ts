@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
     selector: '.app-bar',
+    directives: [ ...ROUTER_DIRECTIVES ],
     styles: [`
         .app-bar {
             height: 65px;
@@ -23,10 +25,10 @@ import { Component } from '@angular/core';
     `],
     template: `
         <header class="app-bar row middle-xs">
-            <span class="logo col-xs-10">Retain</span>
+            <span [routerLink]="['']" class="logo col-xs-10">Retain</span>
             <nav class="col-xs-2">
                 <div class="row middle-xs between-xs">
-                <span class="link">Settings</span>
+                <span [routerLink]="['', 'about']" class="link">About</span>
                 <span class="link">Sign Out</span>
                 </div>
             </nav>

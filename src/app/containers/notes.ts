@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NoteCard, NoteCreator } from '../ui';
 import { NoteService } from '../services';
+import { Store } from '../store';
+import 'rxjs/Rx';
 
 @Component({
     selector: 'notes-container',
@@ -36,7 +38,7 @@ import { NoteService } from '../services';
         </div>
     `
 })
-export class Notes {
+export class Notes implements OnDestroy {
 
     myNote = { title: 'new note', value: 'note here', color: 'lightblue'};
 
@@ -49,22 +51,28 @@ export class Notes {
 
     notes = [];
 
-    constructor(private notesService: NoteService){        
+    constructor(private notesService: NoteService, private store: Store){        
+        this.store.changes.pluck('notes')
+        .subscribe((notes: any) => this.notes = notes);
+        
         this.notesService.getNotes()
-        .subscribe(res => this.notes = res.data);
+        .subscribe();
+    }
+
+    ngOnDestroy (){
+        console.log('destroyed');
     }
 
     onNoteChecked(note, i){
-        console.log(i);
-        console.log(note);
-        this.notes.splice(i, 1);
+        this.notesService.completeNote(note)
+        .subscribe();
     }
 
     onCreateNote(note){
         //this.notesStatic.push(note);
         
         this.notesService.createNote(note)
-        .subscribe(note => this.notes.push(note));
+        .subscribe();
 
     }
 }
